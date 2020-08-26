@@ -7,7 +7,7 @@ describe Bookmarks do
 
       expect(bookmarks).to include("http://www.makersacademy.com")
       expect(bookmarks).to include("http://www.skynews.com")
-      expect(bookmarks).to include("http://www.google.com")
+      expect(bookmarks).to include("http://www.google.co.uk")
     end
   end
 end

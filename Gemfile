@@ -11,3 +11,5 @@ gem 'sinatra'
 gem 'rspec'
 
 gem 'capybara'
+
+gem 'pg'
