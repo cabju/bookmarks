@@ -9,17 +9,15 @@ end
 
 feature 'Viewing bookmarks' do
   scenario 'A user can see bookmarks' do
-    con = PG.connect :dbname => 'bookmark_manager_test'
-    
-    con.exec("INSERT INTO bookmarks VALUES(1, 'http://www.makersacademy.com');")
-    con.exec("INSERT INTO bookmarks VALUES(2, 'http://www.skynews.com');")
-    con.exec("INSERT INTO bookmarks VALUES(3, 'http://www.google.co.uk');")
+    Bookmark.create(url: 'http://www.makersacademy.com', title: 'Makers Academy')
+    Bookmark.create(url: 'http://www.google.co.uk', title: 'Google')
+    Bookmark.create(url: 'http://www.skynews.com', title: 'Sky News')
 
 
     visit('/bookmarks')
-   
-    expect(page).to have_content "http://www.makersacademy.com"
-    expect(page).to have_content "http://www.google.co.uk"
-    expect(page).to have_content "http://www.skynews.com"
+
+    expect(page).to have_link('Makers Academy', href: 'http://www.makersacademy.com')
+    expect(page).to have_link('Google',  href: 'http://www.google.co.uk')
+    expect(page).to have_link('Sky News', href: 'http://www.skynews.com')
   end
 end

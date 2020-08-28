@@ -1,20 +1,36 @@
 require 'bookmarks'
 require 'pg'
+require 'database_helpers'
 
-describe Bookmarks do
+describe Bookmark do
   describe '.all' do
     it 'returns all bookmarks' do
-      
+
       con = PG.connect(dbname: 'bookmark_manager_test')
 
-      con.exec("INSERT INTO bookmarks (url) VALUES ('http://www.makersacademy.com');")
-      con.exec("INSERT INTO bookmarks (url) VALUES('http://www.skynews.com');")
-      con.exec("INSERT INTO bookmarks (url) VALUES('http://www.google.co.uk');")
+      bookmark = Bookmark.create(url: "http://www.makersacademy.com", title: "Makers Academy")
+      Bookmark.create(url: "http://www.google.co.uk", title: "Google")
+      Bookmark.create(url: "http://www.skynews.com", title: "Sky News")
 
-      bookmarks = Bookmarks.all
-      expect(bookmarks).to include("http://www.makersacademy.com")
-      expect(bookmarks).to include("http://www.skynews.com")
-      expect(bookmarks).to include("http://www.google.co.uk")
+      bookmarks = Bookmark.all
+
+      expect(bookmarks.length).to eq 3
+      expect(bookmarks.first).to be_a Bookmark
+      expect(bookmarks.first.id).to eq bookmark.id
+      expect(bookmarks.first.title).to eq 'Makers Academy'
+      expect(bookmarks.first.url).to eq 'http://www.makersacademy.com'
+    end
+  end
+
+  describe '.create' do
+  it 'creates a new bookmark' do
+    bookmarks = Bookmark.create(url: 'http://www.skynews.com', title: 'Sky News')
+    persisted_data = persisted_data(id: bookmarks.id)
+
+    expect(bookmarks).to be_a Bookmark
+    expect(bookmarks.id).to eq persisted_data['id']
+    expect(bookmarks.title).to eq 'Sky News'
+    expect(bookmarks.url).to eq 'http://www.skynews.com'
     end
   end
 end
